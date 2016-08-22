@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">MailTest</string>
+    <string name="send">send</string>
+    <string name="msg_sending_email">sending mail</string>
+</resources>

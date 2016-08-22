@@ -1,0 +1,28 @@
+<resources>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!-- Dimensions for mail_dialog -->
+    <dimen name="mail_dialog_width">738px</dimen>
+    <dimen name="mail_dialog_height">736px</dimen>
+    <dimen name="mail_dialog_title_width">720px</dimen>
+    <dimen name="mail_dialog_title_height">66px</dimen>
+    <dimen name="edit_width">580px</dimen>
+    <dimen name="edit_height">40px</dimen>
+    <!-- Dimensions for Toast -->
+    <dimen name="toast_text_size">24px</dimen>
+    <dimen name="toast_layout_left_margin">20px</dimen>
+    <dimen name="toast_layout_right_margin">15dp</dimen>
+    <dimen name="toast_layout_top_margin">7dp</dimen>
+    <dimen name="toast_layout_bottom_margin">7dp</dimen>
+    <dimen name="toast_image_padding">0dp</dimen>
+    <dimen name="toast_text_padding">20px</dimen>
+
+    <!-- Dimensions for progress dialog -->
+    <dimen name="progress_dialog_width">510px</dimen>
+    <dimen name="progress_dialog_height">190px</dimen>
+    <dimen name="progressbar_left_margin">55px</dimen>
+    <dimen name="progressdialog_left_margin">20px</dimen>
+</resources>

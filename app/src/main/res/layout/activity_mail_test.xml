@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    tools:context="com.lbc.mailtest.MailTestActivity">
+
+    <EditText
+        android:id="@+id/from"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:text="from" />
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:text="ps" />
+    <EditText
+        android:id="@+id/mailhost"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:text="host" />
+    <EditText
+        android:id="@+id/mailport"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:text="port" />
+    <EditText
+        android:id="@+id/to"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:text="to" />
+    <EditText
+        android:id="@+id/suject"
+        android:layout_width="300dp"
+        android:layout_height="50dp" />
+    <EditText
+        android:id="@+id/body"
+        android:layout_width="300dp"
+        android:layout_height="50dp" />
+    <EditText
+        android:id="@+id/picpath"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:text="/mnt/sdcard/DCIM/TmallPic/"/>
+    <EditText
+        android:id="@+id/attachment"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:text="/mnt/sdcard/DCIM/TmallPic/"/>
+    <Button
+        android:id="@+id/send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/send"/>
+</LinearLayout>

@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.support.annotation.ArrayRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
+import android.util.Log;
 
 
 import java.util.ArrayList;
@@ -255,9 +256,13 @@ public class BackgroundMail {
         @Override
         protected Boolean doInBackground(String... arg0) {
             try {
-                MailSender sender = new MailSender(username, password,mailhost,port);
+                Log.d(TAG,"username:"+username);
+                Log.d(TAG,"password:"+password);
+                Log.d(TAG,"mailhost:"+mailhost);
+                Log.d(TAG,"port:"+port);
+                MailSender sender = MailSender.getInstance();//new MailSender(username, password,mailhost,port);
                 MailInfoModel mailinfo = new MailInfoModel(username, mailto, subject, body, attachments, picFilePath);
-                sender.sendMail(mailinfo);
+                sender.sendMail(mailinfo,username, password,mailhost,port);
             } catch (Exception e) {
                 e.printStackTrace();
                 return false;

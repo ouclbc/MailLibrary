@@ -24,23 +24,28 @@ public class MailSender extends javax.mail.Authenticator {
     private static final String TAG = MailSender.class.getSimpleName();
     private static String defaultmailhost = "smtp.163.com";
     private static String defaultmailport = "465";
-    private String user;   
-    private String password;   
+    private String mUser;
+    private String mPassword;
+    private String mMailhost;
+    private String mPort;
     private Session session;
     private MimeMultipart allPart;
 
+    private static MailSender mMailSender = new MailSender();
     static {   
         Security.addProvider(new JSSEProvider());   
     }  
 
-    public MailSender(String user, String password){
-        this(user, password, defaultmailhost, defaultmailport);
+    public static MailSender getInstance(){
+        return mMailSender;
     }
-    public MailSender(String user, String password,String mailhost,String port) {
-    	Log.d(TAG, "Mail sender");
-        this.user = user;   
-        this.password = password;   
-
+    private MailSender(){
+        allPart = new MimeMultipart("mixed");
+    }
+    /*public MailSender(String user, String password,String mailhost,String port) {
+        this.mUser = user;
+        this.mPassword = password;
+        Log.d(TAG, "Mail sender:"+this.mUser +this.mPassword);
         Properties props = new Properties();   
         props.setProperty("mail.transport.protocol", "smtp");   
         props.setProperty("mail.host", mailhost);   
@@ -49,11 +54,11 @@ public class MailSender extends javax.mail.Authenticator {
         props.put("mail.smtp.socketFactory.port", port);   
         props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         props.put("mail.smtp.socketFactory.fallback", "false");   
-        props.setProperty("mail.smtp.quitwait", "false");   
-
+        props.setProperty("mail.smtp.quitwait", "false");
+        Log.d(TAG,"MailSender:"+this);
         session = Session.getDefaultInstance(props, this);
         allPart = new MimeMultipart("mixed");//related mixed
-    }   
+    } */
 
     /**
      * 
@@ -62,10 +67,57 @@ public class MailSender extends javax.mail.Authenticator {
      * 
      * @return
      */
-    protected PasswordAuthentication getPasswordAuthentication() {   
-        return new PasswordAuthentication(user, password);   
-    }   
+    @Override
+    protected PasswordAuthentication getPasswordAuthentication() {
+        Log.d(TAG,"PasswordAuthentication and user:"+this);
+        Log.d(TAG,"PasswordAuthentication and user:"+ mUser +" ps:"+ mPassword);
+        return new PasswordAuthentication(mUser, mPassword);
+    }
 
+    /**
+     *
+     * <p>Title: getSession.</p>
+     * <p>Description: 获取Session.</p>
+     *
+     * @return
+     */
+    private Session getSession(){
+        Properties mailProps=new Properties();
+        mailProps.setProperty("mail.transport.protocol", "smtp");
+        mailProps.setProperty("mail.host", mMailhost);
+        mailProps.put("mail.smtp.localhost", "localhost");
+        //mailProps.put("mail.smtp.auth", "false");//向SMTP服务器提交用户认证
+        mailProps.put("mail.smtp.auth", "true");
+        mailProps.put("mail.smtp.port", mPort);
+        mailProps.put("mail.smtp.socketFactory.port", mPort);
+        mailProps.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
+        mailProps.put("mail.smtp.socketFactory.fallback", "false");
+        mailProps.setProperty("mail.smtp.quitwait", "false");
+        Session session = Session.getDefaultInstance(mailProps, this);
+        return session;
+    }
+    public synchronized void sendEmail(MailInfoModel mailinfo,String mUser,String mPassword,String mMailhost,String mPort) throws Exception {
+        this.mUser = mUser;
+        this.mPassword = mPassword;
+        this.mMailhost = mMailhost;
+        this.mPort = mPort;
+        WithAttachmentMessage mail = new WithAttachmentMessage();
+        MimeMessage message = mail.createMessage(getSession(), mailinfo);
+        // 从session中取mail.smtp.protocol指定协议的Transport
+        Transport transport = getSession().getTransport();
+        // 建立与指定的SMTP服务器的连接
+        transport.connect();// 此时不需要任务参数
+        // 发给所有指定的收件人,若使用message.getAllRecipients()则还包括抄送和暗送的人
+        transport.sendMessage(message, message.getAllRecipients());
+        // 关闭连接
+        transport.close();
+
+        /**
+         * Transport的send静态方法包括了connect,saveChanges,sendMessage,close等一系列操作，
+         * 但它连接同一个SMTP服务器每发一封邮件给服务器都得重新建立连接和断开连接, 虽然使用较方便，但开销较大,不值得推荐。
+         */
+        // Transport.send(message, message.getRecipients(RecipientType.TO));
+    }
     /**
      * 
      * <p>Title: sendMail.</p>
@@ -74,9 +126,13 @@ public class MailSender extends javax.mail.Authenticator {
      * @param mailinfo
      * @throws Exception
      */
-    public synchronized void sendMail(MailInfoModel mailinfo) throws Exception {
+    public synchronized void sendMail(MailInfoModel mailinfo,String mUser,String mPassword,String mMailhost,String mPort) throws Exception {
+        this.mUser = mUser;
+        this.mPassword = mPassword;
+        this.mMailhost = mMailhost;
+        this.mPort = mPort;
         WithAttachmentMessage mail = new WithAttachmentMessage();  
-        MimeMessage message = mail.createMessage(session,mailinfo);
+        MimeMessage message = mail.createMessage(getSession(),mailinfo);
         Transport.send(message);
     }
     /**
